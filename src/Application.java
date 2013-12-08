@@ -7,10 +7,10 @@ public class Application {
 		Integer id = config.getConfig().getInt("number");
 		String[] dirs = config.getConfig().getStringArray("backup.dirs");
 		for (int i = 0; i < dirs.length; i++){
-			file.Directory fileGroup = new file.Directory(dirs[i]);
+			file.ArchiveDirectory fileGroup = new file.ArchiveDirectory(dirs[i]);
 			System.out.println(dirs[i]);
-			for ( File f : fileGroup.getFiles() ) {
-				System.out.println(f.getAbsoluteFile());
+			for (file.ArchiveFile f : fileGroup.getFiles() ) {
+				System.out.println(f.getStringPath());
 			}
 		}
 		System.out.println(dirs.length);
