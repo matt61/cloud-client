@@ -1,5 +1,8 @@
 import java.io.File;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
 public class Application {
 	public static void main(String[] args) {
 		System.out.println("Hello world!");
@@ -13,6 +16,15 @@ public class Application {
 				store.addArchiveFile(f);
 				System.out.println(f.getStringPath());
 			}
+		}
+		try {
+			store.save();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (TransformerException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		System.out.println(dirs.length);
 	}
