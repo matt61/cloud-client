@@ -3,6 +3,7 @@ package file;
 import java.util.ArrayList;
 import java.util.List;
 import java.io.File;
+import java.io.IOException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -13,6 +14,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 
+import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -23,18 +25,23 @@ public class ArchiveStore {
 		this.files.add(file);
 	}
 	
-	public void save() throws ParserConfigurationException, TransformerException{
-		DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
-		DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
-
-		Document doc = docBuilder.newDocument();
+	public void save() throws ParserConfigurationException, TransformerException, DOMException, IOException{
+		Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 		
 		Element rootElement = doc.createElement("archive");
 		doc.appendChild(rootElement);
 
 		for(ArchiveFile f : this.files){
 			Element fileNode = doc.createElement("file");
-			fileNode.appendChild(doc.createTextNode("100000"));
+			Element pathNode = doc.createElement("path");
+			Element hashNode = doc.createElement("hash");
+			
+			pathNode.appendChild(doc.createTextNode(f.file.getAbsolutePath()));
+			hashNode.appendChild(doc.createTextNode(f.getMd5()));
+			
+			fileNode.appendChild(pathNode);
+			fileNode.appendChild(hashNode);
+			
 			rootElement.appendChild(fileNode);
 		}
 		
